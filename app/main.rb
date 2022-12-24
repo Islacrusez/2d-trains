@@ -62,4 +62,9 @@ def load_nodemap(args)
 	args.state.nodemap[:wayfield] = {type: :platform, connects: [:byglass, :redford, :woodbank], facilities: []}
 	args.state.nodemap[:woodbank] = {type: :platform, connects: [:wayfield], facilities: []}
 	args.state.nodemap[:redford] = {type: :station, connects: [:wayfield], facilities: [:siding, :water_tower, :coal_bunker]}
+	
+	args.state.nodemap.each do |key, value|
+		value[:display_name] = key.to_s.capitalize!
+	end
+	
 end
