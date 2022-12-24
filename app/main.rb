@@ -9,7 +9,7 @@ def tick(args)
 end
 
 def init(args)
-
+	load_nodemap(args)
 
 	args.state.game_state = :playing
 end
@@ -47,4 +47,19 @@ end
 
 def game_pause_toggle!(args=$gtk.args)
 	args.state.game_paused? game_unpause! : game_pause!
+end
+
+def load_nodemap(args)
+	args.state.nodemap = {}
+	args.state.nodemap.default = { connects: {} }
+	
+	# test map
+	
+	args.state.nodemap[:byglass] = {type: :platform, connects: [:highgate, :wayfield], facilities: []}
+	args.state.nodemap[:springwyn] = {type: :station, connects: [:highgate], facilities: []}
+	args.state.nodemap[:westmill] = {type: :station, connects: [:highgate], facilities: []}
+	args.state.nodemap[:highgate] = {type: :station, connects: [:springwyn, :westmill, :byglass], facilities: [:office, :warehouse, :water_tower, :coal_bunker, :siding]}
+	args.state.nodemap[:wayfield] = {type: :platform, connects: [:byglass, :redford, :woodbank], facilities: []}
+	args.state.nodemap[:woodbank] = {type: :platform, connects: [:wayfield], facilities: []}
+	args.state.nodemap[:redford] = {type: :station, connects: [:wayfield], facilities: [:siding, :water_tower, :coal_bunker]}
 end
