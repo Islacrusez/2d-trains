@@ -36,3 +36,15 @@ def game_render(args)
 	args.outputs.borders << args.layout.rect(row: 0, col: 0, w: x_split, h: height) # Left 
 	
 end
+
+def game_pause!(args=$gtk.args)
+	args.state.game_paused = true
+end
+
+def game_unpause!(args=$gtk.args)
+	args.state.game_paused = false
+end
+
+def game_pause_toggle!(args=$gtk.args)
+	args.state.game_paused? game_unpause! : game_pause!
+end
