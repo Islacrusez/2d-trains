@@ -46,7 +46,7 @@ def game_unpause!(args=$gtk.args)
 end
 
 def game_pause_toggle!(args=$gtk.args)
-	args.state.game_paused? game_unpause! : game_pause!
+	args.state.game_paused ? game_unpause! : game_pause!
 end
 
 def load_nodemap(args)
