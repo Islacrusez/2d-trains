@@ -11,6 +11,12 @@ end
 def init(args)
 	load_nodemap(args)
 
+	# defaults for game start
+	args.state.main_window = :selected
+	args.state.selected_type = :station
+	args.state.selection = :highgate
+	
+	# for game screen to start on
 	args.state.game_state = :playing
 end
 
@@ -21,6 +27,10 @@ end
 def game_run(args)
 	# render calls
 	game_render(args)
+	
+	# menu controls
+	
+	
 	
 	return if args.state.game_paused
 	# game logic
