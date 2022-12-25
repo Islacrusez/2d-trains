@@ -200,7 +200,7 @@ def check_mouse(mouse, args)
 		end
 	end unless args.state.mouse_clicked
 	on_button = false
-	if mouse.inside_rect?(args.state.clicked_button)
+	if args.state.mouse_clicked && mouse.inside_rect?(args.state.clicked_button)
 		args.state.clicked_button_key = args.state.clicked_button[:path]
 		on_button = true
 	end
