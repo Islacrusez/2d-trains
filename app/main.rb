@@ -61,7 +61,7 @@ end
 
 def load_nodemap(args)
 	args.state.nodemap = {}
-	args.state.nodemap.default = { connects: {} }
+	args.state.nodemap.default = { connects: [] }
 	
 	# test map
 	
