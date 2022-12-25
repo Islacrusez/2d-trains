@@ -32,6 +32,10 @@ def init(args)
 	# data structure
 	args.state.rendered_buttons = {}
 	args.state.clicked_button = {}
+	
+	load_locomotives(args)
+	load_trains(args)
+	
 
 	# defaults for game start
 	args.state.main_window = :selected
@@ -114,6 +118,21 @@ def load_nodemap(args)
 		value[:display_name] = key.to_s.capitalize!
 	end
 	
+end
+
+def load_locomotives(args)
+	args.state.locomotives = []
+	args.state.locomotives << {config: [0, 6, 0], type: :tank, range: 1, max_weight: 45, max_wagons: 6, caboose_required: true, speed: 1}
+end
+
+def load_trains(args)
+	args.state.trains = []
+	
+	# dummy train
+	loco = args.state.locomotives[0]
+	args.state.trains << loco.merge({name: "Little Choo Choo"})
+
+
 end
 
 def get_button_from_layout(layout, text, method, argument, target, args)
