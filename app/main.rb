@@ -16,6 +16,7 @@ end
 
 def init(args)
 	load_nodemap(args)
+	args.state.mouse_clicked ||= false
 	
 	# button locations
 	args.state.button_locations = []
@@ -53,6 +54,15 @@ end
 def game_run(args)
 	# render calls
 	game_render(args)
+	case args.state.main_window
+		when :selected
+		when :stations
+		when :trains then display_trains_viewport(args)
+		when :network
+		when :industries
+		when :finances
+		when :map
+	end
 	
 	# menu controls
 	loc = args.state.button_locations
@@ -132,6 +142,11 @@ def load_trains(args)
 	loco = args.state.locomotives[0]
 	args.state.trains << loco.merge({name: "Little Choo Choo"})
 
+
+end
+
+def display_trains_viewport(args)
+	args.outputs.debug << [10, 25, "Trains viewport"].label
 
 end
 
