@@ -1,3 +1,9 @@
+	BORDER	= {primitive_marker: :border}
+	SPRITE	= {primitive_marker: :sprite}
+	LINE	= {primitive_marker: :line}
+	LABEL	= {primitive_marker: :label}
+	SOLID 	= {primitive_marker: :solid}
+
 def tick(args)
 	init(args) unless args.state.game_state
 	case args.state.game_state
@@ -10,10 +16,21 @@ end
 
 def init(args)
 	load_nodemap(args)
+	
+	# button locations
+	args.state.button_locations = []
+	buttons = args.state.button_locations
+	(0..5).each do |i|
+		buttons << {row: i * 2 + 0.25, col: 1.5, w: 6, h: 1.5}
+	end
+	
+	buttons.map! do |button|
+		args.layout.rect(button)
+	end
+	
 
 	# data structure
-	args.state.rendered_buttons = []
-	args.state.buttons = {}
+	args.state.rendered_buttons = {}
 	args.state.clicked_button = {}
 
 	# defaults for game start
@@ -34,8 +51,17 @@ def game_run(args)
 	game_render(args)
 	
 	# menu controls
+	loc = args.state.button_locations
+	args.state.buttons = []
+	args.state.buttons << get_button_from_layout(loc[0], "Stations", :select_viewport, :stations, :button_stations, args).merge!(SPRITE)
+	args.state.buttons << get_button_from_layout(loc[1], "Trains", :select_viewport, :trains, :button_trains, args).merge!(SPRITE)
+	args.state.buttons << get_button_from_layout(loc[2], "Network", :select_viewport, :network, :button_network, args).merge!(SPRITE)
+	args.state.buttons << get_button_from_layout(loc[3], "Industries", :select_viewport, :industries, :button_industries, args).merge!(SPRITE)
+	args.state.buttons << get_button_from_layout(loc[4], "Finances", :select_viewport, :finances, :button_finances, args).merge!(SPRITE)
+	args.state.buttons << get_button_from_layout(loc[5], "Map", :select_viewport, :map, :button_map, args).merge!(SPRITE)
+	#args.state.buttons << get_button_from_layout(layout, text, method, argument, target, args)
 	
-	
+	check_mouse(args.inputs.mouse, args) if args.inputs.mouse.click || args.state.mouse_clicked
 	
 	return if args.state.game_paused
 	# game logic
@@ -50,6 +76,12 @@ def game_render(args)
 	args.outputs.borders << args.layout.rect(row: 0, col: x_split, w: width - x_split, h: height) # Right 
 	args.outputs.borders << args.layout.rect(row: 0, col: 0, w: x_split, h: height) # Left 
 	
+	
+	args.outputs.sprites << args.state.buttons
+end
+
+def select_viewport(to_select, args=$gtk.args)
+	args.state.main_window = to_select
 end
 
 def game_pause!(args=$gtk.args)
