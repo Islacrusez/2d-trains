@@ -151,7 +151,8 @@ def load_trains(args)
 
 	args.state.train_state_lookup = {}
 	args.state.train_state_lookup[:stopped] = ["Stopped at ", :location]
-	args.state.train_state_lookup[:moving] = ["Moving from ", :location, " towards ", :destination]
+	args.state.train_state_lookup[:moving] = ["Moving from ", :location, " to ", :destination]
+	args.state.train_state_lookup[:ready] = ["Ready to depart from ", :location, " towards ", :destination]
 end
 
 def display_trains_viewport(args)
