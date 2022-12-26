@@ -205,6 +205,24 @@ def display_trains_viewport(args)
 	
 end
 
+def despatch_train(train, args)
+	return unless train[:destination] && train[:destination] != train[:location]
+	train[:state] = :moving
+end
+
+def set_destination(train, destination, args)
+	return unless train[:state] == :ready || train[:state] == :stopped 
+	return if train[:location] == destination
+	return if args.state.nodemap[train[:location]].include?(destination)
+	raise "Attempted to set invalid destination, destination #{destination} is not a Symbol" unless destination.is_a?(Symbol)
+	train[:destination] = destination
+	train[:state] = :ready
+end
+
+def select_train(train, args)
+
+end
+
 def display_loc(place_key, args)
 	args.state.nodemap[loco[:place]][:display_name]
 end
