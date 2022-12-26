@@ -144,12 +144,14 @@ def load_trains(args)
 	
 	# dummy train
 	loco = args.state.locomotives[0]
-	args.state.trains << loco.merge({name: "Little Choo Choo", wagons: [], weight: 0})
+	args.state.trains << loco.merge({name: "Little Choo Choo", wagons: [], weight: 0, location: :highgate, state: :stopped, destination: nil})
 
 	loco = args.state.locomotives[1]
-	args.state.trains << loco.merge({name: "Slightly Bigger Choo Choo", wagons: [], weight: 0})
+	args.state.trains << loco.merge({name: "Slightly Bigger Choo Choo", wagons: [], weight: 0, location: :highgate, state: :stopped, destination: nil})
 
-
+	args.state.train_state_lookup = {}
+	args.state.train_state_lookup[:stopped] = ["Stopped at ", :location]
+	args.state.train_state_lookup[:moving] = ["Moving from ", :location, " towards ", :destination]
 end
 
 def display_trains_viewport(args)
@@ -188,7 +190,9 @@ def display_trains_viewport(args)
 		s_x, s_y, s_max_x, s_max_y = slot[:x], slot[:y], slot[:x] + slot[:w], slot[:y] + slot[:h]
 		# s_ denotes start values from which offsets should be calculated
 		train_card = []
+		display_location = args.state.nodemap[loco[:location]][:display_name]
 		train_card << {x: s_x + 15, y: s_max_y - 10, text: loco[:name], size_enum: 2}.merge(LABEL)
+		train_card << {x: s_x + 15, y: s_max_y - 35, text: get_loco_state_string(loco, args), size_enum: -1}.merge(LABEL)
 		
 		args.state.trains_list_display << train_card
 	end
@@ -200,12 +204,33 @@ def display_trains_viewport(args)
 	
 end
 
+def display_loc(place_key, args)
+	args.state.nodemap[loco[:place]][:display_name]
+end
+
+def get_loco_state_string(loco, args)
+	state = loco[:state]
+	items_to_string = args.state.train_state_lookup[state]
+	items_to_string.map! do |item|
+		case item
+			when String then item
+			when Symbol  then args.state.nodemap[loco[item]][:display_name]
+			else raise "Get Loco State String Case: Error, invalid type received"
+		end
+	end
+	string = ""
+	items_to_string.each do |item|
+		string << item
+	end
+	string
+end
+
 def get_button_from_layout(layout, text, method, argument, target, args)
 	make_button(layout[:x], layout[:y], layout[:w], layout[:h], text, method, argument, target, args)
 end
 
 def make_button(x, y, w, h, text, function, arguments, target, args=$gtk.args)
-	clicked = (target.to_s+"_clicked").to_sym
+	clicked = (target.to_s+"_clicked").to_s.to_sym
 	unless args.state.rendered_buttons[target]
 		make_clicked_button(w, h, text, clicked, args)
 		text_w, text_h = $gtk.calcstringbox(text)
