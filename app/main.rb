@@ -43,6 +43,8 @@ def init(args)
 	args.state.selected_type = :station
 	args.state.selection = :highgate
 	
+	args.state.scroll_amount = 0
+	
 	# for game screen to start on
 	args.state.game_state = :playing
 end
@@ -95,6 +97,7 @@ def game_render(args)
 end
 
 def select_viewport(to_select, args=$gtk.args)
+	args.state.scroll_amount = 0
 	args.state.main_window = to_select
 end
 
@@ -159,10 +162,36 @@ def display_trains_viewport(args)
 	
 	# get list of trains
 	
-	# display individual train in list
+	args.state.trains_list_locations = []
+	elements = args.state.trains_list_locations
+	(0..5).each do |i|
+		elements << {row: i * 2, col: 8.25, w: 14, h: 2}
+	end
 	
+	elements.map! do |element|
+		args.layout.rect(element)
+	end
+	
+	args.outputs.borders << elements
+	
+	# display individual train in list
+	return unless args.state.trains.length > 0
+	slots = args.state.trains_list_locations.take(args.state.trains.length)
+	args.state.trains_list_display = []
+	slots.each_with_index do |slot, i|
+		to_display = i + args.state.scroll_amount
+		loco = args.state.trains[to_display]
+		s_x, s_y, s_max_x, s_max_y = slot[:x], slot[:y], slot[:x] + slot[:w], slot[:y] + slot[:h]
+		# s_ denotes start values from which offsets should be calculated
+		train_card = []
+		train_card << {x: s_x + 15, y: s_max_y - 10, text: loco[:name], size_enum: 2}.merge(LABEL)
+		
+		args.state.trains_list_display << train_card
+	end
+	args.outputs.primitives << args.state.trains_list_display
 	
 	# list navigation - scrolling?
+	args.outputs.borders << args.layout.rect({row: 0, col: 22.5, w: 1.25, h: 12})
 	
 	
 end
