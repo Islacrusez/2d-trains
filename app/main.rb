@@ -136,6 +136,7 @@ end
 def load_locomotives(args)
 	args.state.locomotives = []
 	args.state.locomotives << {config: [0, 6, 0], type: :tank, range: 1, max_weight: 45, max_wagons: 6, caboose_required: true, speed: 1}
+	args.state.locomotives << {config: [2, 6, 0], type: :tender, range: 3, max_weight: 80, max_wagons: 8, caboose_required: true, speed: 2}
 end
 
 def load_trains(args)
@@ -144,6 +145,9 @@ def load_trains(args)
 	# dummy train
 	loco = args.state.locomotives[0]
 	args.state.trains << loco.merge({name: "Little Choo Choo", wagons: [], weight: 0})
+
+	loco = args.state.locomotives[1]
+	args.state.trains << loco.merge({name: "Slightly Bigger Choo Choo", wagons: [], weight: 0})
 
 
 end
