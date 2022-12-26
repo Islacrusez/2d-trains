@@ -140,7 +140,7 @@ def load_trains(args)
 	
 	# dummy train
 	loco = args.state.locomotives[0]
-	args.state.trains << loco.merge({name: "Little Choo Choo"})
+	args.state.trains << loco.merge({name: "Little Choo Choo", wagons: [], weight: 0})
 
 
 end
@@ -150,9 +150,9 @@ def display_trains_viewport(args)
 	
 	# train controls:
 	
-	# buy locomotives
+	## buy locomotives
 	
-	# ?
+	## ?
 	
 	
 	###
