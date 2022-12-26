@@ -147,7 +147,24 @@ end
 
 def display_trains_viewport(args)
 	args.outputs.debug << [10, 25, "Trains viewport"].label
-
+	
+	# train controls:
+	
+	# buy locomotives
+	
+	# ?
+	
+	
+	###
+	
+	# get list of trains
+	
+	# display individual train in list
+	
+	
+	# list navigation - scrolling?
+	
+	
 end
 
 def get_button_from_layout(layout, text, method, argument, target, args)
