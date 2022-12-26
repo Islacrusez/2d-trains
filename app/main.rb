@@ -209,9 +209,7 @@ def display_loc(place_key, args)
 end
 
 def get_loco_state_string(loco, args)
-	state = loco[:state]
-	items_to_string = args.state.train_state_lookup[state]
-	items_to_string.map! do |item|
+	items_to_string = args.state.train_state_lookup[loco[:state]].map do |item|
 		case item
 			when String then item
 			when Symbol  then args.state.nodemap[loco[item]][:display_name]
