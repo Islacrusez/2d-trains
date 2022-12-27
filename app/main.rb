@@ -3,6 +3,7 @@
 	LINE	= {primitive_marker: :line}
 	LABEL	= {primitive_marker: :label}
 	SOLID 	= {primitive_marker: :solid}
+	SCALE	= 2
 
 def tick(args)
 	init(args) unless args.state.game_state
@@ -136,12 +137,12 @@ end
 def load_locomotives(args)
 	args.state.locomotives = []
 	args.state.locomotives << {config: [2, 4, 2], type: :tank, range: 2, max_weight: 45, max_wagons: 6, caboose_required: true, speed: 1}
-	args.state.locomotives << {config: [4, 4, 0], type: :tender, range: 4, max_weight: 80, max_wagons: 8, caboose_required: true, speed: 2}
+	args.state.locomotives << {config: [4, 4, 0], type: :tender, range: 6, max_weight: 80, max_wagons: 8, caboose_required: true, speed: 2}
 	
-	loco_sprite = {path: 'sprites/2-4-2t.png', w: 38, h: 16}
+	loco_sprite = {path: 'sprites/2-4-2t.png', w: 38 * SCALE, h: 16 * SCALE}
 	args.state.locomotives[0][:sprite] = loco_sprite.merge(SPRITE)
 	
-	loco_sprite = {path: 'sprites/4-4-0_T.png', w: 57, h: 16}
+	loco_sprite = {path: 'sprites/4-4-0_T.png', w: 57 * SCALE, h: 16 * SCALE}
 	args.state.locomotives[1][:sprite] = loco_sprite.merge(SPRITE)
 	
 end
@@ -154,7 +155,7 @@ def load_trains(args)
 	args.state.trains << loco.merge({name: "Little Choo Choo", wagons: [], weight: 0, location: :highgate, state: :stopped, destination: nil})
 
 	loco = args.state.locomotives[1]
-	args.state.trains << loco.merge({name: "Slightly Bigger Choo Choo", wagons: [], weight: 0, location: :highgate, state: :stopped, destination: nil})
+	args.state.trains << loco.merge({name: "Considerably Larger Choo Choo", wagons: [], weight: 0, location: :highgate, state: :stopped, destination: nil})
 
 	args.state.train_state_lookup = {}
 	args.state.train_state_lookup[:stopped] = ["Stopped at ", :location]
@@ -201,6 +202,7 @@ def display_trains_viewport(args)
 		display_location = args.state.nodemap[loco[:location]][:display_name]
 		train_card << {x: s_x + 15, y: s_max_y - 10, text: loco[:name], size_enum: 2}.merge(LABEL)
 		train_card << {x: s_x + 15, y: s_max_y - 35, text: get_loco_state_string(loco, args), size_enum: -1}.merge(LABEL)
+		train_card << {x: s_x + 15, y: s_y + 5}.merge(loco[:sprite])
 		
 		args.state.trains_list_display << train_card
 	end
