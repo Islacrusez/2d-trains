@@ -135,8 +135,8 @@ end
 
 def load_locomotives(args)
 	args.state.locomotives = []
-	args.state.locomotives << {config: [2, 4, 2], type: :tank, range: 1, max_weight: 45, max_wagons: 6, caboose_required: true, speed: 1}
-	args.state.locomotives << {config: [4, 4, 0], type: :tender, range: 3, max_weight: 80, max_wagons: 8, caboose_required: true, speed: 2}
+	args.state.locomotives << {config: [2, 4, 2], type: :tank, range: 2, max_weight: 45, max_wagons: 6, caboose_required: true, speed: 1}
+	args.state.locomotives << {config: [4, 4, 0], type: :tender, range: 4, max_weight: 80, max_wagons: 8, caboose_required: true, speed: 2}
 end
 
 def load_trains(args)
