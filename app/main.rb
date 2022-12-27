@@ -137,6 +137,13 @@ def load_locomotives(args)
 	args.state.locomotives = []
 	args.state.locomotives << {config: [2, 4, 2], type: :tank, range: 2, max_weight: 45, max_wagons: 6, caboose_required: true, speed: 1}
 	args.state.locomotives << {config: [4, 4, 0], type: :tender, range: 4, max_weight: 80, max_wagons: 8, caboose_required: true, speed: 2}
+	
+	loco_sprite = {path: 'sprites/2-4-2t.png', w: 38, h: 16}
+	args.state.locomotives[0][:sprite] = loco_sprite.merge(SPRITE)
+	
+	loco_sprite = {path: 'sprites/4-4-0_T.png', w: 57, h: 16}
+	args.state.locomotives[1][:sprite] = loco_sprite.merge(SPRITE)
+	
 end
 
 def load_trains(args)
